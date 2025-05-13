@@ -67,5 +67,31 @@ To deploy the unreliable HTTP server to Google Cloud Run using Terraform, I foll
    terraform init
    terraform apply
 
+## Task 5
+
+    ```bash
+    import requests
+    import time
+    
+    URL = "https://unreliable-banking-atakhan01-960957615762.me-central1.run.app/getlogs"
+    
+    def main():
+        for i in range(100):
+            try:
+                response = requests.get(URL, timeout=5)
+                if response.status_code == 500:
+                    print(f"Request {i+1} - 500 Internal Server Error")
+                elif response.status_code == 200:
+                    print(f"Request {i+1} - 200 OK")
+                else:
+                    print(f"Request {i+1} - {response.status_code} {response.text.strip()}")
+            except Exception as e:
+                print(f"Request {i+1} failed: {e}")
+            time.sleep(0.5)
+    
+    if __name__ == "__main__":
+        main()
+
+
 ## Task 6 – YouTube Video
 https://youtu.be/8kc456b2UJU
