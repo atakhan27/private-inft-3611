@@ -66,3 +66,6 @@ To deploy the unreliable HTTP server to Google Cloud Run using Terraform, I foll
    ```bash
    terraform init
    terraform apply
+
+## Task 6 – YouTube Video
+https://youtu.be/8kc456b2UJU
