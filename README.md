@@ -26,3 +26,43 @@ To containerize and deploy the unreliable HTTP server, I followed these steps:
 3. **Pushed the image to GCP Artifact Registry:**
    ```bash
    docker push me-central1-docker.pkg.dev/inft-3611/unreliable-banking-image/atakhan-v1
+
+## Task 3 – Terraform Deployment
+
+To deploy the unreliable HTTP server to Google Cloud Run using Terraform, I followed these steps:
+
+1. **Created main.tf with the following configuration:**
+   ```bash
+   provider "google" {
+   project = "inft-3611"
+   region  = "me-central1"
+    }
+    
+    resource "google_cloud_run_v2_service" "unreliable_service" {
+      name     = "unreliable-banking"
+      location = "me-central1"
+    
+      template {
+        containers {
+          image = "me-central1-docker.pkg.dev/inft-3611/unreliable-banking-image/atakhan-v1"
+        }
+      }
+    
+      traffic {
+        percent = 100
+        type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+      }
+    }
+    
+    resource "google_cloud_run_v2_service_iam_member" "invoker" {
+      name     = "unreliable-banking"
+      location = "me-central1"
+      project  = "inft-3611"
+      role     = "roles/run.invoker"
+      member   = "allUsers"
+    }
+
+2. **Initialized and Applied Terraform:**
+   ```bash
+   terraform init
+   terraform apply
